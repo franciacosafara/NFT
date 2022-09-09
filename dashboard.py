@@ -377,7 +377,7 @@ def FINAL_result(dfmission10KTF,dfmissionNOT10KTF):
         soma_lin1=0
         for i in range(1,6):
             soma_lin1+=B.iloc[lin1,i][1]
-            if "gucci" in B.iat[lin1,i][0]:
+            if "gucci" in B.iat[lin1,0]:
                 bonus_lin1=0.5
             else:
                 if B.iat[lin1,i][0]!="None":
@@ -392,7 +392,7 @@ def FINAL_result(dfmission10KTF,dfmissionNOT10KTF):
         soma_lin2=0
         for i in range(1,6):
             soma_lin2+=B.iloc[lin2,i][1]
-            if "gucci" in B.iat[lin2,i][0]:
+            if "gucci" in B.iat[lin2,0]:
                 bonus_lin2=0.5
             else:
                 if B.iat[lin2,i][0]!="None":
@@ -428,11 +428,40 @@ def FINAL_result(dfmission10KTF,dfmissionNOT10KTF):
     dfFINAL_withloop=dfFINAL_withloop.round(1)
     dfFINAL_withloop.set_index("parent")
     return dfFINAL_withloop
-    
+
+def convert_df(df):
+    return df.to_csv().encode('utf-8')   
 
 
 df_initial=read_dataframe(address)
 dfmission10KTF,dfmissionNOT10KTF=separate(df_initial)
 dfFINAL_withloop=FINAL_result(dfmission10KTF,dfmissionNOT10KTF)
+st.write("## NFT´s information")
+st.write(dfmission10KTF)
+
+csv1 = convert_df(dfmission10KTF)
+
+st.download_button(
+   "Press to Download",
+   csv1,
+   str(address)+"-NFT.csv",
+   "text/csv",
+   key='download1-csv'
+)
+
+st.write("## Best arrangement")
 st.write(dfFINAL_withloop.style.format({"total": "{:.1f}"}))
 st.write('The total number of points is ', str(round(dfFINAL_withloop['total'].sum(),2)))
+
+
+
+
+csv2 = convert_df(dfFINAL_withloop)
+
+st.download_button(
+   "Press to Download",
+   csv2,
+   str(address)+"-best.csv",
+   "text/csv",
+   key='download2-csv'
+)
