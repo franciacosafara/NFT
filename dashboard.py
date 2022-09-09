@@ -250,7 +250,7 @@ def separate(df_initial):
 def FINAL_result(dfmission10KTF,dfmissionNOT10KTF):
     FINAL=[]
     FINAL2=[]
-    while len(dfmissionNOT10KTF)!=0:
+    while len(dfmissionNOT10KTF)!=0 and len(dfmission10KTF)!=0:
 
         PARENTS=dfmissionNOT10KTF["title2"].unique().tolist()
         #PARENTS.append("blank")
