@@ -36,7 +36,7 @@ def read_dataframe(address):
     i=0
     while next_cursor!= None and i!=50:
         url="https://eth-mainnet.g.alchemy.com/nft/v2/"+str(key)+"/getNFTs?owner="+str(address)+"&pageKey="+str(next_cursor)+"&"+address_string+"withMetadata=true"
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers_alchemy)
         response_json=json.loads(response.text)
         df_cursor = pd.json_normalize(response_json['ownedNfts']) 
         i=i+1
