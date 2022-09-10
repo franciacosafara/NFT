@@ -250,15 +250,15 @@ def separate(df_initial):
 def FINAL_result(dfmission10KTF,dfmissionNOT10KTF):
     FINAL=[]
     FINAL2=[]
-    while len(dfmissionNOT10KTF)!=0 and len(dfmission10KTF)!=0:
+    while len(dfmission10KTF)!=0:
 
         PARENTS=dfmissionNOT10KTF["title2"].unique().tolist()
-        #PARENTS.append("blank")
+        if len(PARENTS)==0:
+            PARENTS=["NO AVATAR"]
         df_list_for_each_load=[]
         TYPES=['Footwear', 'Bag', 'Headgear', 'Outerwear', 'Hand']
         myTYPES=['Footwear', 'Bag', 'Headgear', 'Outerwear', 'Hand']
 
-        #PARENTS=["meetbit #131"]
 
         for avatar in PARENTS:
             LIST_Avatar=[]
@@ -279,7 +279,7 @@ def FINAL_result(dfmission10KTF,dfmissionNOT10KTF):
                                 list_max.append(0.5)
                                 list_max.append("flat")
 
-                            elif avatar=="blank":
+                            elif avatar=="NO AVATAR":
                                 list_max.append(row["Parent Name"])
                                 list_max.append(0)
                                 list_max.append("not flat")
@@ -379,6 +379,8 @@ def FINAL_result(dfmission10KTF,dfmissionNOT10KTF):
             soma_lin1+=B.iloc[lin1,i][1]
             if "gucci" in B.iat[lin1,0]:
                 bonus_lin1=0.5
+            elif "NO AVATAR" in B.iat[lin1,0]:
+                bonus_lin1=0 
             else:
                 if B.iat[lin1,i][0]!="None":
                     if B.iat[lin1,i][2]==B.iat[lin1,0].lower():
@@ -394,6 +396,8 @@ def FINAL_result(dfmission10KTF,dfmissionNOT10KTF):
             soma_lin2+=B.iloc[lin2,i][1]
             if "gucci" in B.iat[lin2,0]:
                 bonus_lin2=0.5
+            elif "NO AVATAR" in B.iat[lin1,0]:
+                bonus_lin2=0 
             else:
                 if B.iat[lin2,i][0]!="None":
                     if B.iat[lin2,i][2]==B.iat[lin2,0].lower():
