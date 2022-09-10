@@ -351,7 +351,7 @@ def FINAL_result(dfmission10KTF,dfmissionNOT10KTF):
     df_FINAL2=pd.DataFrame(FINAL2,columns=["parent",'Footwear', 'Bag', 'Headgear', 'Outerwear', 'Hand',"total"])
     dfFINALcopy=df_FINAL2.copy()
     n=0
-    N=len(df_FINAL2)*1000
+    N=len(df_FINAL2)*2000
     while n<N:
         B=dfFINALcopy.copy()
 
