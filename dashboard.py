@@ -255,6 +255,7 @@ def FINAL_result(dfmission10KTF,dfmissionNOT10KTF):
         PARENTS=dfmissionNOT10KTF["title2"].unique().tolist()
         if len(PARENTS)==0:
             PARENTS=["NO AVATAR"]
+        #PARENTS.append("NONE")
         df_list_for_each_load=[]
         TYPES=['Footwear', 'Bag', 'Headgear', 'Outerwear', 'Hand']
         myTYPES=['Footwear', 'Bag', 'Headgear', 'Outerwear', 'Hand']
@@ -278,12 +279,10 @@ def FINAL_result(dfmission10KTF,dfmissionNOT10KTF):
                                 list_max.append(row["Parent Name"])
                                 list_max.append(0.5)
                                 list_max.append("flat")
-
                             elif avatar=="NO AVATAR":
                                 list_max.append(row["Parent Name"])
                                 list_max.append(0)
                                 list_max.append("not flat")
-
                             else:
                                 if row["Parent Name"]==avatar:
                                     list_max.append(row["Parent Name"])
@@ -335,13 +334,14 @@ def FINAL_result(dfmission10KTF,dfmissionNOT10KTF):
                                     D=d
                                     E=e
             df_list_for_each_load.append([avatar,A,B,C,D,E,resposta])
-
         df_best_for_each_load=pd.DataFrame(df_list_for_each_load,columns=["parent",'Footwear', 'Bag', 'Headgear', 'Outerwear', 'Hand',"total"])
         df_best_for_each_load=df_best_for_each_load.sort_values(by=['total'], ascending=False)
         df_best_for_each_load=df_best_for_each_load.reset_index(drop=True)
         lista_the_best_for_each_load=[df_best_for_each_load["parent"][0],df_best_for_each_load['Footwear'][0][:3],df_best_for_each_load['Bag'][0][:3],df_best_for_each_load['Headgear'][0][:3],df_best_for_each_load['Outerwear'][0][:3],df_best_for_each_load['Hand'][0][:3],df_best_for_each_load["total"][0]]
         lista_the_best_for_each_load2=[df_best_for_each_load["parent"][0],df_best_for_each_load['Footwear'][0][0],df_best_for_each_load['Bag'][0][0],df_best_for_each_load['Headgear'][0][0],df_best_for_each_load['Outerwear'][0][0],df_best_for_each_load['Hand'][0][0],df_best_for_each_load["total"][0]]
-        #df_best.to_excel("Andrew2.xlsx")
+        if len(dfmission10KTF)==0:
+            lista_the_best_for_each_load2=[df_best_for_each_load["parent"][0],"None","None","None","None","None",0]
+            lista_the_best_for_each_load=[df_best_for_each_load["parent"][0],["None", 0, "None"],["None", 0, "None"],["None", 0, "None"],["None", 0, "None"],["None", 0, "None"],0]
         dfmission10KTF=dfmission10KTF[~dfmission10KTF["title"].isin(lista_the_best_for_each_load2)]
         dfmissionNOT10KTF=dfmissionNOT10KTF[~dfmissionNOT10KTF["title2"].isin(lista_the_best_for_each_load2)]
         dfmission10KTF=dfmission10KTF.reset_index(drop=True)
@@ -351,7 +351,7 @@ def FINAL_result(dfmission10KTF,dfmissionNOT10KTF):
     df_FINAL2=pd.DataFrame(FINAL2,columns=["parent",'Footwear', 'Bag', 'Headgear', 'Outerwear', 'Hand',"total"])
     dfFINALcopy=df_FINAL2.copy()
     n=0
-    while n<20000:
+    while n<5000:
         B=dfFINALcopy.copy()
 
         lin1=random.randint(0, len(B)-1)
@@ -376,41 +376,41 @@ def FINAL_result(dfmission10KTF,dfmissionNOT10KTF):
         bonus_lin1=0
         soma_lin1=0
         for i in range(1,6):
-            soma_lin1+=B.iloc[lin1,i][1]
+            soma_lin1+=B.iat[lin1,i][1]
             if "gucci" in B.iat[lin1,0]:
                 bonus_lin1=0.5
             elif "NO AVATAR" in B.iat[lin1,0]:
-                bonus_lin1=0 
+                bonus_lin1=0
             else:
                 if B.iat[lin1,i][0]!="None":
                     if B.iat[lin1,i][2]==B.iat[lin1,0].lower():
                         bonus_lin1+=0.2
                     else:
-                        bonus_lin1+=0.1    
+                        bonus_lin1+=0.1
                 else:
                     bonus_lin1+=0
 
         bonus_lin2=0
         soma_lin2=0
         for i in range(1,6):
-            soma_lin2+=B.iloc[lin2,i][1]
+            soma_lin2+=B.iat[lin2,i][1]
             if "gucci" in B.iat[lin2,0]:
                 bonus_lin2=0.5
-            elif "NO AVATAR" in B.iat[lin1,0]:
-                bonus_lin2=0 
+            elif "NO AVATAR" in B.iat[lin2,0]:
+                bonus_lin2=0
             else:
                 if B.iat[lin2,i][0]!="None":
-                    if B.iat[lin2,i][2]==B.iat[lin2,0].lower():
+                    if B.iat[lin2,i][2]==B.iat[lin2,0]:
                         bonus_lin2+=0.2
                     else:
-                        bonus_lin2+=0.1    
+                        bonus_lin2+=0.1
                 else:
                     bonus_lin2+=0
-            
+
         if soma_lin2*(bonus_lin2+1)+soma_lin1*(bonus_lin1+1)>soma_antes_combonus:
             #print("-")
-            B.iat[lin1,6]=round(soma_lin1*(bonus_lin1+1),1)
-            B.iat[lin2,6]=round(soma_lin2*(bonus_lin2+1),1)
+            B.iat[lin1,6]=soma_lin1*(bonus_lin1+1)
+            B.iat[lin2,6]=soma_lin2*(bonus_lin2+1)
             dfFINALcopy=B.copy()
        # else:
         #    B.iat[lin1,6]=soma_lin1*(bonus_lin1+1)
@@ -419,6 +419,7 @@ def FINAL_result(dfmission10KTF,dfmissionNOT10KTF):
         #print(n)
 
         n=n+1
+
     dfFINAL_withloop=dfFINALcopy.copy()
     dfFINAL_withloop["Footwear"] = dfFINAL_withloop["Footwear"].apply(lambda x: x[0])
     dfFINAL_withloop["Bag"] = dfFINAL_withloop["Bag"].apply(lambda x: x[0])
