@@ -351,7 +351,8 @@ def FINAL_result(dfmission10KTF,dfmissionNOT10KTF):
     df_FINAL2=pd.DataFrame(FINAL2,columns=["parent",'Footwear', 'Bag', 'Headgear', 'Outerwear', 'Hand',"total"])
     dfFINALcopy=df_FINAL2.copy()
     n=0
-    while n<20000:
+    N=len(df_FINAL2)*1000
+    while n<N:
         B=dfFINALcopy.copy()
 
         lin1=random.randint(0, len(B)-1)
